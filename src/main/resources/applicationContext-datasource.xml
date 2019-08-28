@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <bean id="dataSource1" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" >
+        <property name="driverClassName" value="${jdbc.driverClass}" />
+        <property name="url" value="${jdbc.db1.url}" />
+        <property name="username" value="${jdbc.db1.user}" />
+        <property name="password" value="${jdbc.db1.pwd}" />
+    </bean>
+
+    <bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" >
+        <property name="driverClassName" value="${jdbc.driverClass}" />
+        <property name="url" value="${jdbc.db2.url}" />
+        <property name="username" value="${jdbc.db2.user}" />
+        <property name="password" value="${jdbc.db2.pwd}" />
+    </bean>
+
+
+    <!-- 多数据源配置 -->
+    <bean id="dynamicDataSource" class="com.jasper.base.DynamicDataSource" >
+        <property name="targetDataSources">
+            <map>
+                <entry value-ref="dataSource1" key="dataSource1"></entry>
+                <entry value-ref="dataSource2" key="dataSource2"></entry>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="dataSource1" />
+    </bean>
+</beans>
